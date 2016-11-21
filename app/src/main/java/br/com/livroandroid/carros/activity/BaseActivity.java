@@ -8,7 +8,7 @@ import br.com.livroandroid.carros.R;
  * Created by Roberto on 19/11/2016.
  */
 
-public class BaseActivity extends AppCompatActivity{
+public class BaseActivity extends livroandroid.lib.activity.BaseActivity{
     // Configura a Toolbar
     protected void setUpToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
