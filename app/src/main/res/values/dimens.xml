@@ -20,4 +20,6 @@
     <!-- EditarCarroFragment -->
     <dimen name="popup_width">300dp</dimen>
     <dimen name="popup_height">300dp</dimen>
+
 </resources>
+
