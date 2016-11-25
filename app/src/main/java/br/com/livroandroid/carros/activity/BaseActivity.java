@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.support.v4.app.Fragment;
 
 import br.com.livroandroid.carros.R;
+import br.com.livroandroid.carros.fragments.CarrosFragment;
+import br.com.livroandroid.carros.fragments.SiteLivroFragment;
 import livroandroid.lib.utils.NavDrawerUtil;
 
 public class BaseActivity extends livroandroid.lib.activity.BaseActivity {
@@ -40,7 +42,7 @@ public class BaseActivity extends livroandroid.lib.activity.BaseActivity {
                         @Override
                         public boolean onNavigationItemSelected(MenuItem menuItem) {
                             // Seleciona a linha
-                            menuItem.setChecked(true);
+                            menuItem.setChecked(false);
                             // Fecha o menu
                             drawerLayout.closeDrawers();
                             // Trata o evento do menu
@@ -55,24 +57,24 @@ public class BaseActivity extends livroandroid.lib.activity.BaseActivity {
     private void onNavDrawerItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_item_carros_todos:
-                toast("Clicou em carros");
-                //replaceFragment(CarrosFragment.newInstance("todos"));
+                //toast("Clicou em carros");
+                replaceFragment(new CarrosFragment());
                 break;
             case R.id.nav_item_carros_classicos:
-                toast("Clicou em carros clássicos");
-                //replaceFragment(CarrosFragment.newInstance("classicos"));
+                //toast("Clicou em carros clássicos");
+                replaceFragment(new CarrosFragment());
                 break;
             case R.id.nav_item_carros_esportivos:
-                toast("Clicou em carros esportivos");
-                //replaceFragment(CarrosFragment.newInstance("esportivos"));
+                //toast("Clicou em carros esportivos");
+                replaceFragment(new CarrosFragment());
                 break;
             case R.id.nav_item_carros_luxo:
-                toast("Clicou em carros luxo");
-                //replaceFragment(CarrosFragment.newInstance("luxo"));
+                //toast("Clicou em carros luxo");
+                replaceFragment(new CarrosFragment());
                 break;
             case R.id.nav_item_site_livro:
-                snack(drawerLayout, "Clicou em site do livro");
-                //replaceFragment(new SiteLivroFragment());
+                //snack(drawerLayout, "Clicou em site do livro");
+                replaceFragment(new SiteLivroFragment());
                 break;
             case R.id.nav_item_settings:
                 toast("Clicou em configurações");

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/containerNavDrawerListViewHeader"
@@ -23,9 +22,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/navDrawerPhoto_layout_marginLeft"
-        android:layout_marginTop="32dp"
-        android:adjustViewBounds="false"
-        android:cropToPadding="false" />
+        android:layout_marginTop="32dp" />
 
     <LinearLayout
         android:id="@+id/userData"
