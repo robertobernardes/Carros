@@ -13,6 +13,6 @@ public class MainActivity extends BaseActivity {
         setUpToolbar();
         setupNavDrawer();
 
-        replaceFragment(new CarrosFragment());
+        replaceFragment(CarrosFragment.newInstance(R.string.todos));
     }
 }

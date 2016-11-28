@@ -58,19 +58,19 @@ public class BaseActivity extends livroandroid.lib.activity.BaseActivity {
         switch (menuItem.getItemId()) {
             case R.id.nav_item_carros_todos:
                 //toast("Clicou em carros");
-                replaceFragment(new CarrosFragment());
+                replaceFragment(CarrosFragment.newInstance(R.string.todos));
                 break;
             case R.id.nav_item_carros_classicos:
                 //toast("Clicou em carros clássicos");
-                replaceFragment(new CarrosFragment());
+                replaceFragment(CarrosFragment.newInstance(R.string.classicos));
                 break;
             case R.id.nav_item_carros_esportivos:
                 //toast("Clicou em carros esportivos");
-                replaceFragment(new CarrosFragment());
+                replaceFragment(CarrosFragment.newInstance(R.string.esportivos));
                 break;
             case R.id.nav_item_carros_luxo:
                 //toast("Clicou em carros luxo");
-                replaceFragment(new CarrosFragment());
+                replaceFragment(CarrosFragment.newInstance(R.string.luxo));
                 break;
             case R.id.nav_item_site_livro:
                 //snack(drawerLayout, "Clicou em site do livro");
