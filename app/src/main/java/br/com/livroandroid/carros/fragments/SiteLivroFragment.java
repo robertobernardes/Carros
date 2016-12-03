@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -27,7 +29,21 @@ public class SiteLivroFragment extends BaseFragment {
         setWebViewClient(webview);
         // Carrega a página
         webview.loadUrl(URL_SOBRE);
+        configJavaScript();
         return view;
+    }
+
+    private void configJavaScript(){
+        WebSettings settings = webview.getSettings();
+        settings.setJavaScriptEnabled(true);
+        webview.addJavascriptInterface(new LivroAndroidInterface(), "LivroAndroid");
+    }
+
+    class LivroAndroidInterface{
+        @JavascriptInterface
+        public void sobre(){
+            toast("Clicou na figura do livro!");
+        }
     }
 
     private void setWebViewClient(WebView webview) {

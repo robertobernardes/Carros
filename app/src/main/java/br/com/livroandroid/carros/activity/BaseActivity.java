@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.fragments.CarrosFragment;
+import br.com.livroandroid.carros.fragments.CarrosTabFragment;
 import br.com.livroandroid.carros.fragments.SiteLivroFragment;
 import livroandroid.lib.utils.NavDrawerUtil;
 
@@ -57,23 +58,18 @@ public class BaseActivity extends livroandroid.lib.activity.BaseActivity {
     private void onNavDrawerItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_item_carros_todos:
-                //toast("Clicou em carros");
-                replaceFragment(CarrosFragment.newInstance(R.string.todos));
+                replaceFragment(new CarrosTabFragment());
                 break;
             case R.id.nav_item_carros_classicos:
-                //toast("Clicou em carros clássicos");
-                replaceFragment(CarrosFragment.newInstance(R.string.classicos));
+                replaceFragment(CarrosFragment.newInstance("classicos"));
                 break;
             case R.id.nav_item_carros_esportivos:
-                //toast("Clicou em carros esportivos");
-                replaceFragment(CarrosFragment.newInstance(R.string.esportivos));
+                replaceFragment(CarrosFragment.newInstance("esportivos"));
                 break;
             case R.id.nav_item_carros_luxo:
-                //toast("Clicou em carros luxo");
-                replaceFragment(CarrosFragment.newInstance(R.string.luxo));
+                replaceFragment(CarrosFragment.newInstance("luxo"));
                 break;
             case R.id.nav_item_site_livro:
-                //snack(drawerLayout, "Clicou em site do livro");
                 replaceFragment(new SiteLivroFragment());
                 break;
             case R.id.nav_item_settings:
