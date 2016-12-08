@@ -10,6 +10,8 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import org.parceler.Parcels;
+
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.domain.Carro;
 import livroandroid.lib.fragment.BaseFragment;
@@ -21,7 +23,7 @@ public class CarroFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_carro, container, false);
-        Carro c = (Carro) getArguments().getSerializable("carro");
+        carro = Parcels.unwrap(getArguments().getParcelable("carro"));
         return view;
     }
 

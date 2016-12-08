@@ -1,12 +1,14 @@
 package br.com.livroandroid.carros.activity;
 
 import android.os.Bundle;
+
+import org.parceler.Parcels;
+
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.domain.Carro;
 import br.com.livroandroid.carros.fragments.CarroFragment;
 
 public class CarroActivity extends BaseActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -14,7 +16,7 @@ public class CarroActivity extends BaseActivity {
         // Configura a Toolbar como a action bar
         setUpToolbar();
         // Título da toolbar e botão up navigation
-        Carro c = (Carro) getIntent().getSerializableExtra("carro");
+        Carro c = Parcels.unwrap(getIntent().getParcelableExtra("carro"));;
         getSupportActionBar().setTitle(c.nome);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if(savedInstanceState == null) {

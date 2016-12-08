@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 
 import br.com.livroandroid.carros.R;
@@ -84,8 +86,9 @@ public class CarrosFragment extends BaseFragment {
             public void onClickCarro(View view, int idx) {
                 Carro c = carros.get(idx);
                 Intent intent = new Intent(getContext(), CarroActivity.class);
-                intent.putExtra("carro", c);
+                intent.putExtra("carro", Parcels.wrap(c));
                 startActivity(intent);
+
             }
         };
     }
