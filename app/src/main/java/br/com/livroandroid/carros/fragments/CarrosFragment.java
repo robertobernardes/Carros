@@ -6,13 +6,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import org.parceler.Parcels;
 
+import java.io.IOException;
 import java.util.List;
 
 import br.com.livroandroid.carros.R;
@@ -20,18 +21,16 @@ import br.com.livroandroid.carros.activity.CarroActivity;
 import br.com.livroandroid.carros.adapter.CarroAdapter;
 import br.com.livroandroid.carros.domain.Carro;
 import br.com.livroandroid.carros.domain.CarroService;
-import livroandroid.lib.fragment.BaseFragment;
-
 
 public class CarrosFragment extends BaseFragment {
-    private String tipo;
     protected RecyclerView recyclerView;
+    private int tipo;
     private List<Carro> carros;
 
     // Método para instanciar esse fragment pelo tipo.
-    public static CarrosFragment newInstance(String tipo) {
+    public static CarrosFragment newInstance(int tipo) {
         Bundle args = new Bundle();
-        args.putString("tipo", tipo);
+        args.putInt("tipo", tipo);
         CarrosFragment f = new CarrosFragment();
         f.setArguments(args);
         return f;
@@ -42,7 +41,7 @@ public class CarrosFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             // Lê o tipo dos argumentos.
-            this.tipo = getArguments().getString("tipo");
+            this.tipo = getArguments().getInt("tipo");
         }
     }
 
@@ -55,14 +54,6 @@ public class CarrosFragment extends BaseFragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
 
-
-        view.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                snack(recyclerView,"Exemplo de FAB Button.");
-            }
-        });
-
         return view;
     }
 
@@ -73,10 +64,13 @@ public class CarrosFragment extends BaseFragment {
     }
 
     private void taskCarros() {
-        // Busca os carros
-        this.carros = CarroService.getCarros(getContext(), tipo);
-        // Atualiza a lista
-        recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+        try {
+            this.carros = CarroService.getCarros(getContext(), tipo);
+            // Atualiza a lista
+            recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+        } catch (IOException e) {
+            Log.e("livro",e.getMessage(), e);
+        }
     }
 
     private CarroAdapter.CarroOnClickListener onClickCarro() {

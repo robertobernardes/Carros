@@ -35,11 +35,11 @@ public class TabsAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         Fragment f = null;
         if (position == 0) {
-            f = CarrosFragment.newInstance("classicos");
+            f = CarrosFragment.newInstance(R.string.classicos);
         } else if (position == 1) {
-            f = CarrosFragment.newInstance("esportivos");
+            f = CarrosFragment.newInstance(R.string.esportivos);
         } else {
-            f = CarrosFragment.newInstance("luxo");
+            f = CarrosFragment.newInstance(R.string.luxo);
         }
         return f;
     }
