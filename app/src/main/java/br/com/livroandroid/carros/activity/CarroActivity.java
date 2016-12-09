@@ -16,7 +16,7 @@ public class CarroActivity extends BaseActivity {
         // Configura a Toolbar como a action bar
         setUpToolbar();
         // Título da toolbar e botão up navigation
-        Carro c = Parcels.unwrap(getIntent().getParcelableExtra("carro"));;
+        Carro c = Parcels.unwrap(getIntent().getParcelableExtra("carro"));
         getSupportActionBar().setTitle(c.nome);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if(savedInstanceState == null) {

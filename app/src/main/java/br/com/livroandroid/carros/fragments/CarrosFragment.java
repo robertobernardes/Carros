@@ -55,14 +55,13 @@ public class CarrosFragment extends BaseFragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
 
-        /*
+
         view.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 snack(recyclerView,"Exemplo de FAB Button.");
             }
         });
-        */
 
         return view;
     }
