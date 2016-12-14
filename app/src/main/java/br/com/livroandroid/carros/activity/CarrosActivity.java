@@ -13,9 +13,6 @@ public class CarrosActivity extends BaseActivity {
         setContentView(R.layout.activity_carros);
         setUpToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //getSupportActionBar().setTitle(c.nome);
-        toast(getString(getIntent().getIntExtra("tipo", 0)));
         // Título
         getSupportActionBar().setTitle(getString(getIntent().getIntExtra("tipo", 0)));
 

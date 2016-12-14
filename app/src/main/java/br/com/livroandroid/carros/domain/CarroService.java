@@ -5,10 +5,7 @@ import android.util.Log;
 
 import br.com.livroandroid.carros.R;
 import livroandroid.lib.utils.FileUtils;
-import livroandroid.lib.utils.XMLUtils;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
+import livroandroid.lib.utils.HttpHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,26 +17,25 @@ import java.util.List;
 public class CarroService {
     private static final boolean LOG_ON = false;
     private static final String TAG = "CarroService";
+    private static final String URL = "http://www.livroandroid.com.br/livro/carros/carros_{tipo}.json";
 
-    public static List<Carro> getCarros(Context context, int tipo) {
-        try{
-            String json = readFile(context, tipo);
-            List<Carro> carros = parserJSON(context, json);
-            return carros;
-        } catch (Exception e){
-            Log.e(TAG, "Erro ao ler os carros: " + e.getMessage(), e);
-            return null;
-        }
+    public static List<Carro> getCarros(Context context, int tipo) throws IOException {
+        String tipoString = getTipo(tipo);
+        String url = URL.replace("{tipo}", tipoString);
+        // Faz a requisição HTTP no servidor e retorna a string com o conteúdo.
+        HttpHelper http = new HttpHelper();
+        String json = http.doGet(url);
+        List<Carro> carros = parserJSON(context, json);
+        return carros;
     }
 
-    // Faz a leitura do arquivo que está na pasta /res/raw
-    private static String readFile(Context context, int tipo) throws IOException {
+    private static String getTipo(int tipo) {
         if (tipo == R.string.classicos) {
-            return FileUtils.readRawFileString(context, R.raw.carros_classicos, "UTF-8");
+            return "classicos";
         } else if (tipo == R.string.esportivos) {
-            return FileUtils.readRawFileString(context, R.raw.carros_esportivos, "UTF-8");
+            return "esportivos";
         }
-        return FileUtils.readRawFileString(context, R.raw.carros_luxo, "UTF-8");
+        return "luxo";
     }
 
     // Faz o parser do XML e cria a lista de carros

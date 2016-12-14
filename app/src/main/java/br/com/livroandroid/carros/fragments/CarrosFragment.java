@@ -1,17 +1,21 @@
 package br.com.livroandroid.carros.fragments;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.parceler.Parcels;
+
+import java.io.IOException;
 import java.util.List;
 
 import br.com.livroandroid.carros.R;
@@ -62,13 +66,35 @@ public class CarrosFragment extends BaseFragment {
     }
 
     private void taskCarros() {
-        //try {
-            this.carros = CarroService.getCarros(getContext(), tipo);
-            // Atualiza a lista
-            recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
-        //} catch (IOException e) {
-        //    Log.e("livro", e.getMessage(), e);
-        //}
+        // Busca os carros: Dispara a Task
+        //new GetCarrosTask().execute();
+        startTask("carros", new GetCarrosTask(), R.id.progress);
+    }
+
+    // Task para buscar os carros
+    private class GetCarrosTask implements TaskListener<List<Carro>> {
+        @Override
+        public List<Carro> execute() throws Exception {
+            Thread.sleep(500);
+            return CarroService.getCarros(getContext(), tipo);
+        }
+
+        @Override
+        public void updateView(List<Carro> carros) {
+            if (carros != null){
+                CarrosFragment.this.carros = carros;
+                recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+            }
+        }
+
+        @Override
+        public void onError(Exception e) {
+            alert("Ocorreu algum erro ao buscar os dados");
+        }
+
+        @Override
+        public void onCancelled(String s) {
+        }
     }
 
     private CarroAdapter.CarroOnClickListener onClickCarro() {
