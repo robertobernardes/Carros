@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,11 +24,15 @@ import br.com.livroandroid.carros.activity.CarroActivity;
 import br.com.livroandroid.carros.adapter.CarroAdapter;
 import br.com.livroandroid.carros.domain.Carro;
 import br.com.livroandroid.carros.domain.CarroService;
+import livroandroid.lib.utils.AndroidUtils;
+
+import static java.security.AccessController.getContext;
 
 public class CarrosFragment extends BaseFragment {
     protected RecyclerView recyclerView;
     private int tipo;
     private List<Carro> carros;
+    private SwipeRefreshLayout swipeLayout;
 
     // Método para instanciar esse fragment pelo tipo.
     public static CarrosFragment newInstance(int tipo) {
@@ -56,19 +61,41 @@ public class CarrosFragment extends BaseFragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
 
+        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeToRefresh);
+        swipeLayout.setOnRefreshListener(OnRefreshListener());
+        swipeLayout.setColorSchemeResources(
+                R.color.refresh_progress_1,
+                R.color.refresh_progress_2,
+                R.color.refresh_progress_3);
+
         return view;
+    }
+
+    private SwipeRefreshLayout.OnRefreshListener OnRefreshListener() {
+        return new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Valida se existe conexão ao fazer o gesto Pull to Refresh
+                if(AndroidUtils.isNetworkAvailable(getContext())) {
+                    // Atualiza ao fazer o gesto Pull to Refresh
+                    taskCarros(true);
+                } else {
+                    swipeLayout.setRefreshing(false);
+                    snack(recyclerView, R.string.error_conexao_indisponivel);
+                }
+            }
+        };
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        taskCarros();
+        taskCarros(false);
     }
 
-    private void taskCarros() {
+    private void taskCarros(boolean pullToRefresh) {
         // Busca os carros: Dispara a Task
-        //new GetCarrosTask().execute();
-        startTask("carros", new GetCarrosTask(), R.id.progress);
+        startTask("carros", new GetCarrosTask(),pullToRefresh ? R.id.swipeToRefresh : R.id.progress);
     }
 
     // Task para buscar os carros

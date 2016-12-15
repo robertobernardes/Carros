@@ -25,6 +25,7 @@ Versao %s<br><br>
 
     <!-- E -->
     <string name="esportivos">Esportivos</string>
+    <string name="error_conexao_indisponivel">Conexão indisponível. Verifique seu Wi-Fi ou 3G.</string>
 
     <!-- L -->
     <string name="luxo">Luxo</string>
