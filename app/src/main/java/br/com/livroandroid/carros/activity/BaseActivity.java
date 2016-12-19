@@ -13,6 +13,7 @@ import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.fragments.CarrosFragment;
 import br.com.livroandroid.carros.fragments.CarrosTabFragment;
 import br.com.livroandroid.carros.fragments.SiteLivroFragment;
+import livroandroid.lib.utils.AndroidUtils;
 import livroandroid.lib.utils.NavDrawerUtil;
 
 public class BaseActivity extends livroandroid.lib.activity.BaseActivity {
@@ -80,7 +81,12 @@ public class BaseActivity extends livroandroid.lib.activity.BaseActivity {
                 startActivity(new Intent(getContext(), SiteLivroActivity.class));
                 break;
             case R.id.nav_item_settings:
-                toast("Clicou em configurações");
+                if (AndroidUtils.isAndroid3Honeycomb()) {
+                    startActivity(new Intent(this, ConfiguracoesV11Activivity.class));
+                } else {
+                    startActivity(new Intent(this, ConfiguracoesActivivity.class));
+                }
+
                 break;
         }
     }

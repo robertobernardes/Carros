@@ -6,10 +6,13 @@ import android.util.Log;
 import br.com.livroandroid.carros.R;
 import livroandroid.lib.utils.FileUtils;
 import livroandroid.lib.utils.HttpHelper;
+import livroandroid.lib.utils.IOUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +29,16 @@ public class CarroService {
         HttpHelper http = new HttpHelper();
         String json = http.doGet(url);
         List<Carro> carros = parserJSON(context, json);
+
+        salvaArquivoNaMemoriaInterna(context, url, json);
         return carros;
+    }
+
+    private static void salvaArquivoNaMemoriaInterna(Context context, String url, String json){
+        String fileName = url.substring(url.lastIndexOf("/")+1);
+        File file = FileUtils.getFile(context, fileName);
+        IOUtils.writeString(file, json);
+        Log.d(TAG, "Arquivo salvo: " + file);
     }
 
     private static String getTipo(int tipo) {
