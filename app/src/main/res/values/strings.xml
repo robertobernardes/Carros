@@ -33,6 +33,9 @@ Versao %s<br><br>
 
     <!-- M -->
     <string name="mapa">Mapa</string>
+    <string name="msg_alerta_permissao">Para utilizar este aplicativo, você precisa aceitar as permissões.</string>
+    <string name="msg_error_conexao_indisponivel">Conexão indisponível. Verifique seu Wi-Fi ou 3G.</string>
+
 
     <!-- N -->
     <string name="nav_drawer_username">Ricardo Lecheta</string>
