@@ -95,15 +95,19 @@ public class CarrosFragment extends BaseFragment {
 
     private void taskCarros(boolean pullToRefresh) {
         // Busca os carros: Dispara a Task
-        startTask("carros", new GetCarrosTask(),pullToRefresh ? R.id.swipeToRefresh : R.id.progress);
+        startTask("carros", new GetCarrosTask(pullToRefresh),pullToRefresh ? R.id.swipeToRefresh : R.id.progress);
     }
 
     // Task para buscar os carros
     private class GetCarrosTask implements TaskListener<List<Carro>> {
+        public boolean refresh;
+        public GetCarrosTask(boolean refresh){
+            this.refresh = refresh;
+        }
         @Override
         public List<Carro> execute() throws Exception {
             Thread.sleep(500);
-            return CarroService.getCarros(getContext(), tipo);
+            return CarroService.getCarros(getContext(), tipo, refresh);
         }
 
         @Override
