@@ -14,6 +14,7 @@ Versao %s<br><br>
 	]]>
 	</string>
     <string name="about_dialog_title">Livro Android</string>
+    <string name="Atualizar">Atualizar</string>
 
     <!-- C -->
     <string name="carros">Carros</string>

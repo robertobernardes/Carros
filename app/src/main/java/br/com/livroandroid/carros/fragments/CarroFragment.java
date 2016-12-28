@@ -54,9 +54,38 @@ public class CarroFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_edit) {
-            toast("Editar: " + carro.nome);
+            //toast("Editar: " + carro.nome);
+            EditarCarroDialog.show(getFragmentManager(), carro, new EditarCarroDialog.Callback() {
+                @Override
+                public void onCarroUpdated(Carro carro) {
+                    toast("Carro [" + carro.nome + "] atualizado");
+                    // Salva o carro
+                    CarroDB db = new CarroDB(getContext());
+                    db.save(carro);
+                    // Atualiza o título com o novo nome
+                    CarroActivity a = (CarroActivity) getActivity();
+                    a.setTitle(carro.nome);
+                    // Envia o evento para o bus
+                    CarrosApplication.getInstance().getBus().post("refresh");
+                }
+            });
+            return true;
         } else if (item.getItemId() == R.id.action_delete) {
-            toast("Deletar: " + carro.nome);
+            //toast("Deletar: " + carro.nome);
+            DeletarCarroDialog.show(getFragmentManager(), new DeletarCarroDialog.Callback() {
+                @Override
+                public void onClickYes() {
+                    toast("Carro [" + carro.nome + "] deletado.");
+                    // Deleta o carro
+                    CarroDB db = new CarroDB(getActivity());
+                    db.delete(carro);
+                    // Fecha a activity
+                    getActivity().finish();
+                    // Envia o evento para o bus
+                    CarrosApplication.getInstance().getBus().post("refresh");
+                }
+            });
+            return true;
         } else if (item.getItemId() == R.id.action_share) {
             toast("Compartilhar");
         } else if (item.getItemId() == R.id.action_maps) {
