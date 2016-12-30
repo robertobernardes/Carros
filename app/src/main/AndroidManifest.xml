@@ -10,6 +10,7 @@
     <application
         android:name=".CarrosApplication"
         android:allowBackup="true"
+        android:backupAgent=".backup.ExemploBackupAgent"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -55,13 +56,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.SplashActivity">
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Chave do backup service do Google -->
+        <meta-data
+            android:name="com.google.android.backup.api_key"
+            android:value="AEdPqrEAAAAIs1GIXqvAiyxvQKOYUIPCZM3_krU1o0x_g8UFHw" />
     </application>
 
 </manifest>
