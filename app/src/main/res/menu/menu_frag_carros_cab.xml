@@ -6,7 +6,7 @@
         android:icon="@drawable/ic_action_share"
         android:title="@string/share"
         app:showAsAction="always"
-        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"/>
+        />
     <item
         android:id="@+id/action_remove"
         android:icon="@android:drawable/ic_menu_delete"

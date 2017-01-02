@@ -1,6 +1,7 @@
 package br.com.livroandroid.carros.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import com.squareup.otto.Subscribe;
 
 import org.parceler.Parcels;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,8 @@ import br.com.livroandroid.carros.domain.Carro;
 import br.com.livroandroid.carros.domain.CarroDB;
 import br.com.livroandroid.carros.domain.CarroService;
 import livroandroid.lib.utils.AndroidUtils;
+import livroandroid.lib.utils.IOUtils;
+import livroandroid.lib.utils.SDCardUtils;
 
 import static java.security.AccessController.getContext;
 
@@ -47,7 +51,6 @@ public class CarrosFragment extends BaseFragment {
     private List<Carro> carros;
     private SwipeRefreshLayout swipeLayout;
     private ActionMode actionMode;
-    private Intent shareIntent;
 
     // Método para instanciar esse fragment pelo tipo.
     public static CarrosFragment newInstance(int tipo) {
@@ -208,18 +211,9 @@ public class CarrosFragment extends BaseFragment {
                 //Minha implementação
                 actionMode.finish();
             }
-
-            updateShareIntent(selectedCarros);
         }
     }
 
-    // Atualiza a share intent com os carros selecionados
-    private void updateShareIntent(List<Carro> selectedCarros) {
-        if(shareIntent != null) {
-            // Texto com os carros
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "Carros: " + selectedCarros);
-        }
-    }
 
     // Retorna a lista de carros selecionados
     private List<Carro> getSelectedCarros() {
@@ -234,16 +228,19 @@ public class CarrosFragment extends BaseFragment {
         return new ActionMode.Callback() {
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+
                 // Infla o menu específico da action bar de contexto (CAB)
                 MenuInflater inflater = getActivity().getMenuInflater();
                 inflater.inflate(R.menu.menu_frag_carros_cab, menu);
 
+                /*
                 MenuItem shareItem = menu.findItem(R.id.action_share);
                 ShareActionProvider share = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
                 shareIntent = new Intent(Intent.ACTION_SEND);
                 //shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.app_name));
                 shareIntent.setType("text/*");
                 share.setShareIntent(shareIntent);
+                */
 
                 return true;
             }
@@ -251,6 +248,7 @@ public class CarrosFragment extends BaseFragment {
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 return true;
             }
+
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 List<Carro> selectedCarros = getSelectedCarros();
@@ -267,7 +265,8 @@ public class CarrosFragment extends BaseFragment {
                     snack(recyclerView, "Carros excluídos com sucesso.");
 
                 } else if (item.getItemId() == R.id.action_share) {
-                    toast("Compartilhar " + selectedCarros);
+                    // Dispara a tarefa para fazer download das fotos
+                    startTask("compartilhar", new CompartilharTask(selectedCarros));
                 }
                 // Encerra o action mode
                 mode.finish();
@@ -285,5 +284,48 @@ public class CarrosFragment extends BaseFragment {
                 recyclerView.getAdapter().notifyDataSetChanged();
             }
         };
+    }
+
+    // Task para fazer o download
+    // Faça import da classe android.net.Uri;
+    private class CompartilharTask implements TaskListener {
+        // Lista de arquivos para compartilhar
+        ArrayList<Uri> imageUris = new ArrayList<Uri>();
+        private final List<Carro> selectedCarros;
+        public CompartilharTask(List<Carro> selectedCarros) {
+            this.selectedCarros = selectedCarros;
+        }
+        @Override
+        public Object execute() throws Exception {
+            if(selectedCarros != null) {
+                for (Carro c : selectedCarros) {
+                    // Faz o download da foto do carro para arquivo
+                    String url = c.urlFoto;
+                    String fileName = url.substring(url.lastIndexOf("/"));
+                    // Cria o arquivo no SD card
+                    File file = SDCardUtils.getPrivateFile(getContext(), "carros", fileName);
+                    IOUtils.downloadToFile(c.urlFoto, file);
+                    // Salva a Uri para compartilhar a foto
+                    imageUris.add(Uri.fromFile(file));
+                }
+            }
+            return null;
+        }
+        @Override
+        public void updateView(Object o) {
+            // Cria a intent com a foto dos carros
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+            shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+            shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+            shareIntent.setType("image/*");
+            // Cria o Intent Chooser com as opções
+            startActivity(Intent.createChooser(shareIntent, "Enviar Carros"));
+        }
+        @Override
+        public void onError(Exception e) { alert("Ocorreu algum erro ao compartilhar."); }
+        @Override
+        public void onCancelled(String s) { }
     }
 }
