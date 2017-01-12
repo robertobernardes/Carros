@@ -1,8 +1,9 @@
 package br.com.livroandroid.carros.fragments;
 
-import android.content.Context;
-import android.net.Uri;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,11 +19,10 @@ import org.parceler.Parcels;
 import br.com.livroandroid.carros.CarrosApplication;
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.activity.CarroActivity;
+import br.com.livroandroid.carros.activity.VideoActivity;
 import br.com.livroandroid.carros.domain.Carro;
 import br.com.livroandroid.carros.domain.CarroDB;
-import livroandroid.lib.fragment.BaseFragment;
-
-import static java.security.AccessController.getContext;
+import livroandroid.lib.utils.IntentUtils;
 
 public class CarroFragment extends BaseFragment {
     private Carro carro;
@@ -33,6 +33,12 @@ public class CarroFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_carro, container, false);
         carro = Parcels.unwrap(getArguments().getParcelable("carro"));
         setHasOptionsMenu(true);
+        view.findViewById(R.id.imgPlayVideo).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                showVideo(carro.urlVideo, v);
+            }
+        });
         return view;
     }
 
@@ -91,8 +97,39 @@ public class CarroFragment extends BaseFragment {
         } else if (item.getItemId() == R.id.action_maps) {
             toast("Mapa");
         } else if (item.getItemId() == R.id.action_video) {
-            toast("Vídeo");
+            final String url = carro.urlVideo;
+            View menuItemView = getActivity().findViewById(item.getItemId());
+            if (menuItemView != null && url != null) {
+                showVideo(url, menuItemView);
+            }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showVideo(final String url, View ancoraView) {
+        if (url != null && ancoraView != null) {
+
+            PopupMenu popupMenu = new PopupMenu(getActionBar().getThemedContext(), ancoraView);
+            popupMenu.inflate(R.menu.menu_popup_video);
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    if (item.getItemId() == R.id.action_video_browser) {
+                        // Abre o vídeo no browser
+                        IntentUtils.openBrowser(getContext(), url);
+                    } else if (item.getItemId() == R.id.action_video_player) {
+                        // Abre o vídeo no Player de Vídeo Nativo
+                        IntentUtils.showVideo(getContext(), url);
+                    } else if (item.getItemId() == R.id.action_video_videoview) {
+                        // Abre outra activity com VideoView
+                        Intent intent = new Intent(getContext(), VideoActivity.class);
+                        intent.putExtra("carro", Parcels.wrap(carro));
+                        startActivity(intent);
+                    }
+                    return true;
+                }
+            });
+            popupMenu.show();
+        }
     }
 }

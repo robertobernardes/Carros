@@ -4,6 +4,9 @@
     <!-- A -->
     <string name="action_about">Sobre</string>
     <string name="action_settings">Settings</string>
+    <string name="action_video_browser">Browser</string>
+    <string name="action_video_player">Video Player</string>
+    <string name="action_video_videoview">VideoView</string>
     <string name="about_dialog_text">
 <![CDATA[
 <b>Aplicativo dos Carros 2015</b><br>
