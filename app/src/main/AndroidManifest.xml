@@ -65,6 +65,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.VideoActivity"
+            android:parentActivityName=".activity.CarroActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.CarroActivity" />
+        </activity>
 
         <!-- Chave do backup service do Google -->
         <meta-data
