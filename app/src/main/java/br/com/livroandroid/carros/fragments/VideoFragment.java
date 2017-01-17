@@ -21,7 +21,7 @@ public class VideoFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video, container, false);
         VideoView videoView = (VideoView) view.findViewById(R.id.videoView);
-        Carro c = Parcels.unwrap(getArguments().getParcelable("carro"));
+        Carro c = getArguments().getParcelable("carro");
         if (c != null) {
             videoView.setVideoURI(Uri.parse(c.urlVideo));
             videoView.setMediaController(new MediaController(getContext()));

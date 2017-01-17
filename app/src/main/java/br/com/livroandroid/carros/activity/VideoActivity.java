@@ -5,26 +5,21 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
-import org.parceler.Parcels;
-
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.domain.Carro;
 import br.com.livroandroid.carros.fragments.VideoFragment;
 
-/**
- * Created by roberto on 11/01/17.
- */
-
 public class VideoActivity extends BaseActivity {
 
     private Carro carro;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
         // Configura a Toolbar como a action bar
         setUpToolbar();
-        carro = Parcels.unwrap(getIntent().getParcelableExtra("carro"));
+        carro = getIntent().getParcelableExtra("carro");
         getSupportActionBar().setTitle(carro.nome);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (savedInstanceState == null) {
@@ -35,12 +30,13 @@ public class VideoActivity extends BaseActivity {
                     videoFragment).commit();
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent = NavUtils.getParentActivityIntent(getActivity());
-                intent.putExtra("carro", Parcels.wrap(carro));
+                intent.putExtra("carro", carro);
                 NavUtils.navigateUpTo(getActivity(), intent);
                 return true;
         }

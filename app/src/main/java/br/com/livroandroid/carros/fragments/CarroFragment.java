@@ -14,7 +14,6 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import org.parceler.Parcels;
 
 import br.com.livroandroid.carros.CarrosApplication;
 import br.com.livroandroid.carros.R;
@@ -22,6 +21,10 @@ import br.com.livroandroid.carros.activity.CarroActivity;
 import br.com.livroandroid.carros.activity.VideoActivity;
 import br.com.livroandroid.carros.domain.Carro;
 import br.com.livroandroid.carros.domain.CarroDB;
+
+import br.com.livroandroid.carros.fragments.DeletarCarroDialog;
+import br.com.livroandroid.carros.fragments.EditarCarroDialog;
+
 import livroandroid.lib.utils.IntentUtils;
 
 public class CarroFragment extends BaseFragment {
@@ -31,7 +34,7 @@ public class CarroFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_carro, container, false);
-        carro = Parcels.unwrap(getArguments().getParcelable("carro"));
+        carro = getArguments().getParcelable("carro");
         setHasOptionsMenu(true);
         view.findViewById(R.id.imgPlayVideo).setOnClickListener(new View.OnClickListener(){
             @Override
@@ -123,7 +126,7 @@ public class CarroFragment extends BaseFragment {
                     } else if (item.getItemId() == R.id.action_video_videoview) {
                         // Abre outra activity com VideoView
                         Intent intent = new Intent(getContext(), VideoActivity.class);
-                        intent.putExtra("carro", Parcels.wrap(carro));
+                        intent.putExtra("carro", carro);
                         startActivity(intent);
                     }
                     return true;

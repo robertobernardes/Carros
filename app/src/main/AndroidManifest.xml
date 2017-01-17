@@ -32,6 +32,10 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/API_KEY" />
 
+        <!-- Chave do backup service do Google -->
+        <meta-data
+            android:name="com.google.android.backup.api_key"
+            android:value="@string/BACKUP_API_KEY" />
 
         <activity
             android:name=".activity.MainActivity"
@@ -91,10 +95,13 @@
                 android:value=".activity.CarroActivity" />
         </activity>
 
-        <!-- Chave do backup service do Google -->
-        <meta-data
-            android:name="com.google.android.backup.api_key"
-            android:value="AEdPqrEAAAAIs1GIXqvAiyxvQKOYUIPCZM3_krU1o0x_g8UFHw" />
+        <activity
+            android:name=".activity.MapaActivity"
+            android:parentActivityName=".activity.CarroActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.CarroActivity" />
+        </activity>
 
 
     </application>

@@ -2,6 +2,8 @@ package br.com.livroandroid.carros.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.ActivityCompat;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -20,7 +22,7 @@ public class CarroActivity extends BaseActivity {
         // Configura a Toolbar como a action bar
         setUpToolbar();
         // Título da toolbar e botão up navigation
-        Carro c = Parcels.unwrap(getIntent().getParcelableExtra("carro"));
+        Carro c = getIntent().getParcelableExtra("carro");
         getSupportActionBar().setTitle(c.nome);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Imagem de header na action bar
@@ -39,5 +41,15 @@ public class CarroActivity extends BaseActivity {
         // O título deve ser setado na CollapsingToolbarLayout
         CollapsingToolbarLayout c = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         c.setTitle(s);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                ActivityCompat.finishAfterTransition(getActivity());
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

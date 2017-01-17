@@ -170,7 +170,7 @@ public class CarrosFragment extends BaseFragment {
                 Carro c = carros.get(idx);
                 if (actionMode == null) {
                     Intent intent = new Intent(getContext(), CarroActivity.class);
-                    intent.putExtra("carro", Parcels.wrap(c));
+                    intent.putExtra("carro", c);
                     startActivity(intent);
                 } else { // Se a CAB está ativada
                     // Seleciona o carro
@@ -185,8 +185,7 @@ public class CarrosFragment extends BaseFragment {
             public void onLongClickCarro(View view, int idx) {
                 if (actionMode != null) { return; }
                 // Liga a action bar de contexto (CAB)
-                actionMode = getAppCompatActivity().
-                        startSupportActionMode(getActionModeCallback());
+                actionMode = getAppCompatActivity().startSupportActionMode(getActionModeCallback());
                 Carro c = carros.get(idx);
                 c.selected = true; // Seleciona o carro
                 // Solicita ao Android para desenhar a lista novamente
