@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import br.com.livroandroid.carros.CarrosApplication;
 import br.com.livroandroid.carros.R;
 import br.com.livroandroid.carros.activity.CarroActivity;
+import br.com.livroandroid.carros.activity.MapaActivity;
 import br.com.livroandroid.carros.activity.VideoActivity;
 import br.com.livroandroid.carros.domain.Carro;
 import br.com.livroandroid.carros.domain.CarroDB;
@@ -26,6 +27,8 @@ import br.com.livroandroid.carros.fragments.DeletarCarroDialog;
 import br.com.livroandroid.carros.fragments.EditarCarroDialog;
 
 import livroandroid.lib.utils.IntentUtils;
+
+import static java.security.AccessController.getContext;
 
 public class CarroFragment extends BaseFragment {
     private Carro carro;
@@ -98,7 +101,13 @@ public class CarroFragment extends BaseFragment {
         } else if (item.getItemId() == R.id.action_share) {
             toast("Compartilhar");
         } else if (item.getItemId() == R.id.action_maps) {
-            toast("Mapa");
+
+            //toast("Mapa");
+            // Abre outra activity para mostrar o mapa
+            Intent intent = new Intent(getContext(), MapaActivity.class);
+            intent.putExtra("carro", carro);
+            startActivity(intent);
+
         } else if (item.getItemId() == R.id.action_video) {
             final String url = carro.urlVideo;
             View menuItemView = getActivity().findViewById(item.getItemId());
