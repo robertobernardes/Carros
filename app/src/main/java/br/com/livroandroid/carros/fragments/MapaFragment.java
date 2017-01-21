@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -53,7 +54,17 @@ public class MapaFragment extends BaseFragment implements OnMapReadyCallback {
                     Double.parseDouble(carro.longitude));
             // Posiciona o mapa na coordenada da fábrica (zoom = 13)
             CameraUpdate update = CameraUpdateFactory.newLatLngZoom(location, 13);
-            map.moveCamera(update);
+            map.animateCamera(update, 10000, new GoogleMap.CancelableCallback() {
+                @Override
+                public void onFinish() {
+                    Toast.makeText(getContext(), "Mapa Centralizado.", Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onCancel() {
+                    Toast.makeText(getContext(), "Animação Cancelada.", Toast.LENGTH_SHORT).show();
+                }
+            });
+            //map.moveCamera(update);
             // Marcador no local da fábrica
             map.addMarker(new MarkerOptions()
                     .title(carro.nome)

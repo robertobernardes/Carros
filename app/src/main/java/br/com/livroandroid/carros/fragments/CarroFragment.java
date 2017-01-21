@@ -55,6 +55,13 @@ public class CarroFragment extends BaseFragment {
         setTextString(R.id.tDesc, carro.desc);
         final ImageView imgView = (ImageView) getView().findViewById(R.id.img);
         Picasso.with(getContext()).load(carro.urlFoto).fit().into(imgView);
+
+        // Seta a Lat/Lng
+        setTextString(R.id.tLatLng, String.format("Lat/Lng: %s/%s", carro.latitude, carro.longitude));
+        // Adiciona o fragment do Mapa
+        MapaFragment mapaFragment = new MapaFragment();
+        mapaFragment.setArguments(getArguments());
+        getChildFragmentManager().beginTransaction().replace(R.id.mapFragment, mapaFragment).commit();
     }
 
     @Override
